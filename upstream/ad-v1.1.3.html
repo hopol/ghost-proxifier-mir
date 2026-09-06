@@ -5,15 +5,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghost Proxifier Sponsored Ads</title>
-    <!-- Baidu Analytics -->
+    <!-- 统计埋点 (PostHog 原生 fetch + 国内 IP 探测 + 兼容读取百度首次访问时间) -->
     <script>
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?c447bf587e485cdd1d8d1fa846e460bf";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
+        (function () {
+            var QUEUE_KEY = 'ph_event_queue';
+
+            function getQueue() {
+                try {
+                    var data = localStorage.getItem(QUEUE_KEY);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function saveQueue(queue) {
+                try {
+                    localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+                } catch (e) { }
+            }
+
+            function enqueueEvent(payload) {
+                var queue = getQueue();
+                var item = {
+                    id: 'evt_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+                    payload: payload,
+                    status: 'pending',
+                    created_at: Date.now(),
+                    retries: 0
+                };
+                queue.push(item);
+                saveQueue(queue);
+                flushQueue();
+            }
+
+            var isFlushing = false;
+            function flushQueue() {
+                if (isFlushing) return;
+                var queue = getQueue();
+                if (!queue.length) return;
+
+                isFlushing = true;
+                var pendingItems = queue.filter(function (item) { return item.status === 'pending'; });
+                if (!pendingItems.length) {
+                    isFlushing = false;
+                    return;
+                }
+
+                var promises = pendingItems.map(function (item) {
+                    return fetch('https://t.ghostproxifier.com/capture/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(item.payload)
+                    }).then(function (res) {
+                        if (res.ok) {
+                            item.status = 'sent';
+                            return item.id;
+                        }
+                        item.retries = (item.retries || 0) + 1;
+                        return null;
+                    }).catch(function () {
+                        item.retries = (item.retries || 0) + 1;
+                        return null;
+                    });
+                });
+
+                Promise.all(promises).then(function (sentIds) {
+                    var currentQueue = getQueue();
+                    var remaining = currentQueue.filter(function (item) {
+                        var isSent = sentIds.indexOf(item.id) !== -1 || item.status === 'sent';
+                        var isTooManyRetries = (item.retries || 0) >= 10;
+                        return !isSent && !isTooManyRetries;
+                    });
+                    saveQueue(remaining);
+                    isFlushing = false;
+                }).catch(function () {
+                    isFlushing = false;
+                });
+            }
+
+            setInterval(flushQueue, 5000);
+            try { window.addEventListener('online', flushQueue); } catch (e) { }
+            setTimeout(flushQueue, 300);
+
+            function getOrCreateGlobalVisitorId() {
+                var storageKey = 'global_visitor_id';
+                var gvid = '';
+                try { gvid = localStorage.getItem(storageKey); } catch (e) { }
+                if (!gvid) {
+                    var randStr = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+                        ? crypto.randomUUID()
+                        : (Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 10) + '-' + Math.random().toString(36).substring(2, 10));
+                    gvid = 'gvid-' + randStr;
+                    try { localStorage.setItem(storageKey, gvid); } catch (e) { }
+                }
+                return gvid;
+            }
+
+            function getBaiduLvtRaw() {
+                try {
+                    return localStorage.getItem('Hm_lvt_c447bf587e485cdd1d8d1fa846e460bf') || '';
+                } catch (e) {
+                    return '';
+                }
+            }
+
+            var gvid = getOrCreateGlobalVisitorId();
+            var bdRaw = getBaiduLvtRaw();
+            var posthogToken = 'phc_nF89Du7x954MRygk3pGNsnJ3GUdTZGeTKXXdnmJmwi9M';
+
+            function sendPostHogEvent(realIp) {
+                var properties = {
+                    global_visitor_id: gvid,
+                    real_ip: realIp || '',
+                    version: 'ad-v1.1.3.html',
+                    current_url: window.location.href,
+                    client_event_time: new Date().toISOString()
+                };
+
+                if (realIp) {
+                    properties['$ip'] = realIp;
+                }
+
+                if (bdRaw) {
+                    properties.baidu_lvt_raw = bdRaw;
+                }
+
+                var payload = {
+                    token: posthogToken,
+                    event: '$pageview',
+                    distinct_id: gvid,
+                    properties: properties
+                };
+
+                enqueueEvent(payload);
+            }
+
+            function getRealIp(callback) {
+                try {
+                    fetch('https://myip.ipip.net/s')
+                        .then(function (res) { return res.text(); })
+                        .then(function (text) {
+                            var ip = text ? text.trim() : '';
+                            if (ip && ip.indexOf('.') !== -1 && ip !== '127.0.0.1') {
+                                callback(ip);
+                            } else {
+                                fallbackBaiduIp(callback);
+                            }
+                        })
+                        .catch(function () { fallbackBaiduIp(callback); });
+                } catch (e) {
+                    fallbackBaiduIp(callback);
+                }
+            }
+
+            function fallbackBaiduIp(callback) {
+                try {
+                    fetch('https://opendata.baidu.com/api.php?query=ip&co=&resource_id=6006&oe=utf8')
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                            var ip = (data && data.data && data.data[0] && data.data[0].origip) ? data.data[0].origip.trim() : '';
+                            if (ip && ip !== '127.0.0.1') {
+                                callback(ip);
+                            } else {
+                                fallbackTencentIp(callback);
+                            }
+                        })
+                        .catch(function () { fallbackTencentIp(callback); });
+                } catch (e) {
+                    fallbackTencentIp(callback);
+                }
+            }
+
+            function fallbackTencentIp(callback) {
+                try {
+                    fetch('https://r.inews.qq.com/api/ip2location')
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                            var ip = (data && (data.ip || data.client_ip)) ? (data.ip || data.client_ip).trim() : '';
+                            callback((ip && ip !== '127.0.0.1') ? ip : '');
+                        })
+                        .catch(function () { callback(''); });
+                } catch (e) {
+                    callback('');
+                }
+            }
+
+            getRealIp(function (realIp) {
+                sendPostHogEvent(realIp);
+            });
+        })();
     </script>
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
