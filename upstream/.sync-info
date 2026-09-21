@@ -1,5 +1,5 @@
-commit=4f24b2abed853b9167de5019897a1a341b625c60
-timestamp=2026-09-11T07:04:36Z
+commit=2454ba4a7ade8ffcfbe7aea1bd9369170572efeb
+timestamp=2026-09-21T07:43:10Z
 upstream_url=https://github.com/liliBestCoder/ghost-proxifier-pro
 upstream_branch=master
-source_ref=v1.2.0
+source_ref=v1.2.0-1-g2454ba4
