@@ -160,25 +160,209 @@ body {
 .version {
     font-size: 0.85rem;
     color: var(--text-dim);
-    padding-left: 20px;
+    padding-left: 4px;
+}
+
+/* Spec Cards Grid in Hero (Option D) */
+.spec-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 6px;
+}
+
+.spec-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 16px 12px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text-main);
+    background: rgba(14, 18, 28, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.spec-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: background 0.3s ease;
+}
+
+.primary-spec {
+    border-color: rgba(0, 242, 255, 0.28);
+    background: linear-gradient(160deg, rgba(0, 242, 255, 0.06) 0%, rgba(13, 17, 26, 0.88) 100%);
+}
+
+.primary-spec::before {
+    background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.6), transparent);
+}
+
+.primary-spec:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 242, 255, 0.55);
+    box-shadow: 0 14px 35px rgba(0, 242, 255, 0.18), 0 0 20px rgba(0, 242, 255, 0.08);
+}
+
+.secondary-spec {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.03) 0%, rgba(13, 17, 26, 0.88) 100%);
+}
+
+.secondary-spec::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.secondary-spec:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.spec-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.spec-badge {
+    font-family: 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    border-radius: 5px;
+}
+
+.msi-badge {
+    background: rgba(0, 242, 255, 0.12);
+    color: var(--primary);
+    border: 1px solid rgba(0, 242, 255, 0.25);
+}
+
+.zip-badge {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.spec-status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.msi-status {
+    color: var(--primary);
+}
+
+.zip-status {
+    color: var(--text-dim);
+}
+
+.spec-card-body {
+    flex: 1;
+    margin-bottom: 12px;
+}
+
+.spec-card-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    margin-bottom: 5px;
+}
+
+.spec-card-desc {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.45;
+}
+
+.spec-card-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 9px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.msi-action {
+    color: var(--primary);
+}
+
+.primary-spec:hover .msi-action {
+    color: #ffffff;
+}
+
+.zip-action {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.secondary-spec:hover .zip-action {
+    color: #ffffff;
+}
+
+.spec-arrow {
+    display: inline-block;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spec-card:hover .spec-arrow {
+    transform: translateX(4px);
+}
+
+.download-card:hover .download-card-btn svg {
+    transform: translateY(2px);
+}
+
+.download-card-btn svg {
+    transition: transform 0.3s ease;
 }
 
 /* Buttons */
 .btn-gradient {
-    display: inline-block;
-    padding: 18px 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 32px;
+    height: 54px;
     background: var(--gradient);
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 600;
-    transition: transform 0.3s, box-shadow 0.3s;
+    font-size: 0.98rem;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 242, 255, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
+    white-space: nowrap;
 }
 
 .btn-gradient:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 242, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 242, 255, 0.45);
+    color: #ffffff;
 }
 
 .btn-primary-sm {
@@ -199,20 +383,45 @@ body {
 }
 
 .btn-outline {
-    display: inline-block;
-    padding: 12px 24px;
-    border: 1px solid var(--primary);
-    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 32px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
-    transition: background 0.3s, color 0.3s;
+    white-space: nowrap;
 }
 
 .btn-outline:hover {
-    background: var(--primary);
-    color: var(--bg-dark);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.38);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+.btn-gradient svg,
+.btn-outline svg {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.btn-gradient:hover svg,
+.btn-outline:hover svg {
+    transform: scale(1.12);
 }
 
 /* Sections General */
@@ -602,6 +811,14 @@ section {
         align-items: center;
     }
 
+    .spec-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        max-width: 400px;
+        width: 100%;
+        text-align: left;
+    }
+
     .btn-gradient {
         padding: 16px 32px;
         font-size: 0.95rem;
@@ -697,10 +914,19 @@ section {
         font-size: 0.95rem;
     }
 
-    .btn-gradient {
-        padding: 14px 28px;
-        font-size: 0.9rem;
+    .hero-btn-group {
+        flex-direction: column;
         width: 100%;
+        gap: 12px;
+    }
+
+    .btn-gradient,
+    .btn-outline {
+        padding: 0 20px;
+        height: 50px;
+        font-size: 0.92rem;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     section {
