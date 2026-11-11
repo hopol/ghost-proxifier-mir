@@ -32,7 +32,7 @@
     <link rel="canonical" href="https://ghostproxifier.com/index_zh.html">
     <link rel="icon" type="image/png" href="logo.png">
 
-    <link rel="stylesheet" href="index.css?v=1.2.1-spec">
+    <link rel="stylesheet" href="index.css?v=1.2.2-spec">
     <style>
         .spec-cards {
             display: grid !important;
@@ -242,6 +242,8 @@
                 <li><a href="#features">功能</a></li>
                 <li><a href="#comparison">对比</a></li>
                 <li><a href="#pricing">价格</a></li>
+                <li><a href="docs-plugin-sdk.html" title="Ghost Proxifier 插件开发文档">插件开发</a></li>
+                <li><a href="https://github.com/liliBestCoder/ghost-proxifier-pro" target="_blank" title="Ghost Proxifier Pro 官方 GitHub 仓库">GitHub 仓库</a></li>
                 <li><a href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=gFOuUvz9PJevqf7FB4BEgbACaMJ6RihPozcB0LdB5En8jAU%2B1ixTfx8%2FyZkoC5xN&amp;busi_data=eyJncm91cENvZGUiOiI5NDUxMzg0MDgiLCJ0b2tlbiI6Ilc3Zm41TUQ1RkU1alFNOUVxMW5hckVNZmpqSFN6V25JcUtyK3duaFZWYisyblVsSEdFNzZ3RUQrTmt3enVIajgiLCJ1aW4iOiIxODcxODE0NzQ5In0%3D&amp;data=u7S-lMspdK2PJy1DWRR7cda6y4mYYoKKmA_GaiXg1g_ArnccknlAlDz-zbdWg2H5s7nt_PrY47zqHFCZI8Ffaw&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" title="QQ群：945138408">加入交流群</a></li>
                 <li><a href="index.html" class="lang-switch">English</a></li>
             </ul>
@@ -259,7 +261,7 @@
                 <div class="hero-btns">
                     <div class="spec-cards">
                         <!-- Spec Card 1: Windows 标准安装包 (MSI) -->
-                        <a href="https://gh-proxy.com/github.com/liliBestCoder/ghost-proxifier-pro/releases/download/v1.2.1/GhostProxifier-1.2.1-win64.msi"
+                        <a href="https://gh-proxy.com/github.com/liliBestCoder/ghost-proxifier-pro/releases/download/v1.2.2/GhostProxifier-1.2.2-win64.msi"
                             class="spec-card primary-spec" title="下载 Ghost Proxifier Pro Windows 客户端安装包">
                             <div class="spec-card-top">
                                 <span class="spec-badge msi-badge">.MSI INSTALLER</span>
@@ -270,13 +272,13 @@
                                 <p class="spec-card-desc">深度集成系统，支持应用内一键无感自动升级</p>
                             </div>
                             <div class="spec-card-action msi-action">
-                                <span>立即下载 (4.6 MB)</span>
+                                <span>立即下载 (5.0 MB)</span>
                                 <span class="spec-arrow">→</span>
                             </div>
                         </a>
 
                         <!-- Spec Card 2: 免安装便携版 (ZIP) -->
-                        <a href="https://gh-proxy.com/github.com/liliBestCoder/ghost-proxifier-pro/releases/download/v1.2.1/GhostProxifier-1.2.1-portable-win64.zip"
+                        <a href="https://gh-proxy.com/github.com/liliBestCoder/ghost-proxifier-pro/releases/download/v1.2.2/GhostProxifier-1.2.2-portable-win64.zip"
                             class="spec-card secondary-spec" title="下载 Ghost Proxifier Pro 免安装绿色便携包">
                             <div class="spec-card-top">
                                 <span class="spec-badge zip-badge">.ZIP PORTABLE</span>
@@ -287,12 +289,12 @@
                                 <p class="spec-card-desc">纯净免安装解压即用，配置本地隔离，随插随走</p>
                             </div>
                             <div class="spec-card-action zip-action">
-                                <span>下载压缩包 (4.0 MB)</span>
+                                <span>下载压缩包 (4.3 MB)</span>
                                 <span class="spec-arrow">→</span>
                             </div>
                         </a>
                     </div>
-                    <p class="version">Version 1.2.1 • 适用于 Windows 10 / 11 (64位)</p>
+                    <p class="version">Version 1.2.2 • 适用于 Windows 10 / 11 (64位)</p>
                 </div>
             </div>
         </div>
@@ -424,7 +426,9 @@
                     <span>Ghost Proxifier</span>
                 </div>
                 <div class="contact-info">
-                    <a href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=gFOuUvz9PJevqf7FB4BEgbACaMJ6RihPozcB0LdB5En8jAU%2B1ixTfx8%2FyZkoC5xN&amp;busi_data=eyJncm91cENvZGUiOiI5NDUxMzg0MDgiLCJ0b2tlbiI6Ilc3Zm41TUQ1RkU1alFNOUVxMW5hckVNZmpqSFN6V25JcUtyK3duaFZWYisyblVsSEdFNzZ3RUQrTmt3enVIajgiLCJ1aW4iOiIxODcxODE0NzQ5In0%3D&amp;data=u7S-lMspdK2PJy1DWRR7cda6y4mYYoKKmA_GaiXg1g_ArnccknlAlDz-zbdWg2H5s7nt_PrY47zqHFCZI8Ffaw&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" title="QQ群：945138408">联系我们（QQ群：945138408）</a>
+                    <a href="docs-plugin-sdk.html" style="color: var(--text-dim); text-decoration: none; margin-right: 20px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'">插件开发文档</a>
+                    <a href="https://github.com/liliBestCoder/ghost-proxifier-pro" target="_blank" style="color: var(--text-dim); text-decoration: none; margin-right: 20px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'">GitHub 仓库</a>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=gFOuUvz9PJevqf7FB4BEgbACaMJ6RihPozcB0LdB5En8jAU%2B1ixTfx8%2FyZkoC5xN&amp;busi_data=eyJncm91cENvZGUiOiI5NDUxMzg0MDgiLCJ0b2tlbiI6Ilc3Zm41TUQ1RkU1alFNOUVxMW5hckVNZmpqSFN6V25JcUtyK3duaFZWYisyblVsSEdFNzZ3RUQrTmt3enVIajgiLCJ1aW4iOiIxODcxODE0NzQ5In0%3D&amp;data=u7S-lMspdK2PJy1DWRR7cda6y4mYYoKKmA_GaiXg1g_ArnccknlAlDz-zbdWg2H5s7nt_PrY47zqHFCZI8Ffaw&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" title="QQ群：945138408">联系我们：QQ群（945138408）</a>
                 </div>
             </div>
             <div class="copyright">
